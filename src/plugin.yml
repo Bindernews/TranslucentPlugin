@@ -1,0 +1,5 @@
+name: TranslucentPlugin
+author: Binder News
+version: N/A
+main: com.github.bindernews.translucent.TransPlugin
+depends: [Factions]
