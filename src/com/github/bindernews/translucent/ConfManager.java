@@ -1,6 +1,7 @@
 package com.github.bindernews.translucent;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,21 +26,60 @@ public class ConfManager {
 			}
 		}
 	}
+	
+	/**
+	 * 
+	 * @param conf The configuration to write to
+	 * @param onlyCreate if true then existing values will not be overwritten
+	 * @return true if values were changed
+	 */
+	public static boolean writeConfig(Configuration conf, boolean onlyCreate)
+	{
+		for(Field f : Conf.class.getDeclaredFields())
+		{
+			if (onlyCreate && conf.contains(f.getName()))
+				continue;
+			try {
+				if (f.getType() == double.class
+					|| f.getType() == int.class
+					|| f.getType() == boolean.class
+					|| f.getType() == String.class
+					|| List.class.isAssignableFrom(f.getType()))
+				{
+					conf.set(f.getName(), f.get(null));
+				}
+				else if (Set.class.isAssignableFrom(f.getType()))
+				{
+					@SuppressWarnings("unchecked")
+					ArrayList<String> hlist = new ArrayList<String>( (Set<String>)f.get(null) );
+					conf.set(f.getName(), hlist);
+				}
+				else
+				{
+					throw new ClassCastException("Wrong type: " + f.getType().getName());
+				}
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		return true;
+	}
 
 	public static boolean loadConfig(Configuration conf)
 	{
 		for(Field f : Conf.class.getDeclaredFields())
 		{
 			try {
-				if (f.getType() == Double.class)
+				if (f.getType() == double.class)
 				{
 					f.set(null, conf.getDouble(f.getName(), f.getDouble(null)));
 				}
-				else if (f.getType() == Integer.class)
+				else if (f.getType() == int.class)
 				{
 					f.set(null, conf.getInt(f.getName(), f.getInt(null)));
 				}
-				else if (f.getType() == Boolean.class)
+				else if (f.getType() == boolean.class)
 				{
 					f.set(null, conf.getBoolean(f.getName(), f.getBoolean(null)));
 				}
@@ -47,7 +87,7 @@ public class ConfManager {
 				{
 					f.set(null, conf.getString(f.getName(), (String)f.get(null)));
 				}
-				else if (f.getType() == List.class)
+				else if (List.class.isAssignableFrom(f.getType()))
 				{
 					f.set(null, conf.getStringList(f.getName()));
 				}
@@ -59,7 +99,7 @@ public class ConfManager {
 				}
 				else
 				{
-					throw new ClassCastException("Wrong type");
+					throw new ClassCastException("Wrong type: " + f.getType().getName());
 				}
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();

@@ -1,6 +1,5 @@
 package com.github.bindernews.translucent;
 
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,15 +22,12 @@ public class TransPlugin extends JavaPlugin {
 	public void onEnable() {
 		
 		// load config and add defaults if not present
-		for(Entry<String,Object> entry : ConfManager.DEFAULTS.entrySet())
-		{
-			if (!getConfig().contains(entry.getKey()))
-				getConfig().set(entry.getKey(), entry.getValue());
-		}
+		// Then, save the config again in case defaults were added
+		boolean didChangeDiskConf = ConfManager.writeConfig(getConfig(), true);
 		ConfManager.loadConfig(getConfig());
-		
-		// save the config again in case defaults were added
-		saveConfig();
+		if (didChangeDiskConf) {
+			saveConfig();
+		}
 
 		// register listeners
 		getServer().getPluginManager().registerEvents(new FactionsListener(), this);
