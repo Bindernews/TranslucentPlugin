@@ -51,7 +51,7 @@ public class ConfManager {
 				{
 					f.set(null, conf.getStringList(f.getName()));
 				}
-				else if (f.getType() == Set.class)
+				else if (Set.class.isAssignableFrom(f.getType()))
 				{
 					HashSet<String> hset = new HashSet<String>();
 					hset.addAll( conf.getStringList(f.getName()) );
@@ -69,9 +69,18 @@ public class ConfManager {
 		return true;
 	}
 	
-	public static boolean setField(Field f, String value) throws IllegalArgumentException
+	public static String getOptionTypeName(String optName) {
+		try {
+			return Conf.class.getField(optName).getType().getName();
+		} catch (NoSuchFieldException | SecurityException e) {
+			return null;
+		}
+	}
+	
+	public static boolean setFromString(String name, String value) throws IllegalArgumentException
 	{
 		try {
+			Field f = Conf.class.getField(name);
 			if (f.getType() == Double.class)
 			{
 				f.set(null, Double.parseDouble(value));
@@ -90,7 +99,7 @@ public class ConfManager {
 			}
 			return true;
 		} catch (IllegalArgumentException | IllegalAccessException
-				| SecurityException e) {
+				| SecurityException | NoSuchFieldException e) {
 			return false;
 		}
 	}

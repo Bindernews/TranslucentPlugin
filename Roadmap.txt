@@ -1,0 +1,7 @@
+
+Bugs:
+ - No default configuration is created
+
+Features:
+ - configurable time before considering a faction "offline" and disabling tnt
+ - kick a user for being afk for a certain amount of time
