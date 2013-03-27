@@ -2,6 +2,7 @@ package com.github.bindernews.translucent;
 
 import java.util.HashMap;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,13 +17,19 @@ public class PlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW)
 	public void cancelCommandsWhenFighting(PlayerCommandPreprocessEvent event)
 	{
+		if (!attackTimeMap.containsKey(event.getPlayer()))
+			return;
 		double time = millisToSeconds(System.currentTimeMillis());
 		double lastTime = attackTimeMap.get(event.getPlayer());
 		if (time - lastTime < Conf.timeToReenableCommands)
 		{
-			String[] split = event.getMessage().split("[/ ]");
-			if (Conf.commandsToDisableOnAttack.contains(split[0])) {
-				event.setCancelled(true);
+			for(String s : Conf.commandsToDisableOnAttack)
+			{
+				if (event.getMessage().startsWith(s))
+				{
+					event.getPlayer().sendMessage(ChatColor.RED + "You may not use that command during combat!");
+					event.setCancelled(true);
+				}
 			}
 		}
 	}
