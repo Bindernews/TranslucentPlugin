@@ -33,19 +33,19 @@ public class TransPlugin extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new FactionsListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 		
-		/*
+		
 		// register commands
 		cmdTransPlugin = new CmdTransPlugin();
 		getCommand("transplugin").setExecutor(cmdTransPlugin);
 		getCommand("transplugin").setTabCompleter(cmdTransPlugin);
-		*/
 		
-		logger.info(getName() + "enabled");
+		
+		logger.info(getName() + " enabled");
 	}
 	
 	@Override
 	public void onDisable() {
-		logger.info(getName() + "disabled");
+		logger.info(getName() + " disabled");
 	}
 	
 	@Override
