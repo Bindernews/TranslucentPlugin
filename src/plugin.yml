@@ -1,0 +1,9 @@
+name: TranslucentPlugin
+author: Binder News
+version: N/A
+main: com.github.bindernews.translucent.TransPlugin
+depends: [Factions]
+commands:
+  transplugin:
+    description: In-game management of the Translucent Plugin
+    usage: /<command> <subcommand> <...>

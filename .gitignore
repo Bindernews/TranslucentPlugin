@@ -1,6 +1,14 @@
+
 *.class
 
 # Package Files #
 *.jar
 *.war
 *.ear
+
+# Build folders #
+bin/
+lib/
+
+# Computer-specific testing files #
+testing_export.jardesc
