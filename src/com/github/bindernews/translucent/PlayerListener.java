@@ -37,9 +37,11 @@ public class PlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void watchPlayerDamage(EntityDamageByEntityEvent event)
 	{
-		if (!(event.getEntity() instanceof Player))
-			return;
-		attackTimeMap.put((Player)event.getEntity(), millisToSeconds(System.currentTimeMillis()));
+		if ((event.getEntity() instanceof Player)
+			&& (event.getDamager() instanceof Player)) 
+		{
+			attackTimeMap.put((Player)event.getEntity(), millisToSeconds(System.currentTimeMillis()));
+		}
 	}
 	
 	public static double millisToSeconds(long millis)

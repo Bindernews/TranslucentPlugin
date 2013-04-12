@@ -3,7 +3,35 @@ author: Binder News
 version: N/A
 main: com.github.bindernews.translucent.TransPlugin
 depends: [Factions]
+prefix: transp
 commands:
   transplugin:
     description: In-game management of the Translucent Plugin
     usage: /<command> <subcommand> <...>
+    permission: transplugin.admin
+  mute:
+    description: Mute a player
+    usage: /<command> <player> [reason]
+    permission: transplugin.mute
+  unmute:
+    description: Unmute a muted player
+    usage: /<command> <player>
+    permission: transplugin.unmute
+  mutelist:
+    description: List muted players
+    usage: /<command>
+    permission: transplugin.mutelist
+
+permissions:
+  transplugin.mute:
+    description: Muting players
+    default: op
+  transplugin.unmute:
+    description: Unmuting players
+    default: op
+  transplugin.mutelist:
+    description: Listing muted players
+    default: op
+  transplugin.admin:
+    description: Access to the /transplugin command
+    default: op
